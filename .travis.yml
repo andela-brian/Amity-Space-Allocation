@@ -1,10 +1,18 @@
 language: python
+
+#test agains python 2
 python:
   - "2.7"
-notifications:
-  email: false
-# command to install dependencies
+
+#cache pip
+cache: pip
+
+#install dependacies
 install:
   - pip install -r requirements.txt
-# command to run tests
+
+#run test using nose
 script: nosetests tests
+
+notifications:
+  email: false
