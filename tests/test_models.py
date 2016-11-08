@@ -47,3 +47,7 @@ class FellowClassTest(unittest.TestCase):
                              [fellow.get_allocated_office_space(),
                               fellow.get_allocated_living_space()],
                              msg="Fellow should be assigned Hogwarts Office and PHP living space")
+
+
+class AmityClassTest(unittest.TestCase):
+    pass
