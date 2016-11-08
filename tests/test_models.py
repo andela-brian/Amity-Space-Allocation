@@ -1,16 +1,24 @@
 import unittest
 
 
-class PersonClassTest(unittest.TestCase):
-    pass
-
-
 class StaffClassTest(unittest.TestCase):
-    pass
+    def setUp(self):
+        self.default_staff = Staff()
+
+    def test_staff_is_subclass_of_person(self):
+        self.assertIsInstance(self.default_staff, Person,
+                              msg="Staff Class should be a subclass of Person")
+
+    def test_staff_default_values(self):
+        self.assertEqual(True, self.default_staff.is_staff(),
+                         msg="is_staff should be true for Staff class")
+        self.assertEqual(False, self.default_staff.is_allocated_office(),
+                         msg="Staff should not be allocated an Office when Created")
+        self.assertIsNone(self.default_staff.get_allocated_office_space(),
+                          msg="Staff allocated Office Space should be None before an Office Space is assigned")
 
 
 class FellowClassTest(unittest.TestCase):
-
     def setUp(self):
         self.fellow_default = Fellow("Brian Test")
 
