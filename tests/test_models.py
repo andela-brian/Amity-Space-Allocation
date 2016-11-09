@@ -49,5 +49,56 @@ class FellowClassTest(unittest.TestCase):
                              msg="Fellow should be assigned Hogwarts Office and PHP living space")
 
 
+class RoomClassTest(unittest.TestCase):
+
+    def test_create_new_room(self):
+        pass
+
+    def test_allocate_person_to_room(self):
+        pass
+
+    def test_get_allocated_users(self):
+        pass
+
+    def test_raise_value_error_on_allocate_nonexisitng_room(self):
+        pass
+
+
+class OfficeClassTest(unittest.TestCase):
+
+    def test_office_allocate_max_four_persons(self):
+        pass
+
+    def test_raise_error_on_assigning_full_office(self):
+        pass
+
+    def test_allocate_staff_to_office(self):
+        pass
+
+    def test_allocate_fellow_to_office(self):
+        pass
+
+
+class LivingClassTest(unittest.TestCase):
+
+    def test_raise_error_allocate_staff_to_living_space(self):
+        pass
+
+    def test_raise_error_on_allocate_more_than_six_fellows(self):
+        pass
+
+
 class AmityClassTest(unittest.TestCase):
-    pass
+
+    def test_relocate_person(self):
+        pass
+
+    def test_raise_error_on_allocate_non_existing_room(self):
+        pass
+
+    def test_get_room_allocations(self):
+        pass
+
+    def test_get_unallocated_persons(self):
+        pass
+
