@@ -49,56 +49,40 @@ class FellowClassTest(unittest.TestCase):
                              msg="Fellow should be assigned Hogwarts Office and PHP living space")
 
 
-class RoomClassTest(unittest.TestCase):
+class LivingSpaceClassTest(unittest.TestCase):
 
-    def test_create_new_room(self):
-        pass
+    def test_raise_error_assign_staff_to_living_space(self):
+        staff = Staff(name="John Staff", id="1")
+        living_space = LivingSpace("Shell")
 
-    def test_allocate_person_to_room(self):
-        pass
-
-    def test_get_allocated_users(self):
-        pass
-
-    def test_raise_value_error_on_allocate_nonexisitng_room(self):
-        pass
-
-
-class OfficeClassTest(unittest.TestCase):
-
-    def test_office_allocate_max_four_persons(self):
-        pass
-
-    def test_raise_error_on_assigning_full_office(self):
-        pass
-
-    def test_allocate_staff_to_office(self):
-        pass
-
-    def test_allocate_fellow_to_office(self):
-        pass
-
-
-class LivingClassTest(unittest.TestCase):
-
-    def test_raise_error_allocate_staff_to_living_space(self):
-        pass
-
-    def test_raise_error_on_allocate_more_than_six_fellows(self):
-        pass
+        self.assertRaises(ValueError,
+                          living_space.set_allocate_person, staff,
+                          msg="A Staff member cannot be allocated Living Space"
+                          )
 
 
 class AmityClassTest(unittest.TestCase):
 
-    def test_relocate_person(self):
-        pass
+    def setUp(self):
+
+        self.amity = Amity()
+
+        office_list= [Office("Camelot"), Office("Valhala")]
+        living_space_list = [LivingSpace("Orange"), LivingSpace("Blue")]
+
+        self.amity.offices = {}
+        self.amity.living_spaces = {}
+        for office in office_list:
+            self.amity.offices[office.get_name()] = office
+
+        for living_space in living_space_list:
+            self.amity.living_spaces[living_space.get_name()] = living_space
 
     def test_raise_error_on_allocate_non_existing_room(self):
-        pass
+        self.assertRaises(ValueError, self.amity.allocate_room, ("SHELL", 1),
+                          msg="a peron should not allocate space in non existing rooom")
 
-    def test_get_room_allocations(self):
-        pass
+    
 
-    def test_get_unallocated_persons(self):
-        pass
+
 
