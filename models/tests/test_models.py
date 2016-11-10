@@ -1,30 +1,53 @@
-
 from unittest import TestCase
 
 
+class TestPersonClass(TestCase):
+
+    def setUp(self):
+        self.name = "John Doe"
+        self.id = "FE01"
+
+    def test_error_creating_person_object(self):
+        self.assertRaises(ValueError, Person(id=self.id),
+                          msg="A person object cannot be created without id")
+        self.assertRaises(ValueError, Person(name=self.name),
+                          msg="A person cannot be created with a name")
+
+
 class TestFellowCLass(TestCase):
+    def setUp(self):
+        self.name = "John Doe"
+        self.id = "FE01"
 
     def test_fellow_is_subclass_of_person(self):
-        pass
+        fellow = Fellow(id=self.id, name=self.name)
+        self.assertIsInstance(fellow, Person,
+                              msg="Class Fellow should extend Person Class")
 
-    def test_create_person(self):
-        pass
-
-    def test_error_creating_person_no_name(self):
-        pass
+    def test_create_new_fellow_(self):
+        fellow = Fellow(id=self.id, name=self.name)
+        self.assertListEqual([self.id, self.name],
+                             [fellow.get_id, fellow.get_name],
+                             msg="The fellow named {0} should have id {1}".format(self.name, self.id))
+        self.assertEqual("FELLOW", fellow.get_role(),
+                         msg="get_role functions should return 'FELLOW' for Fellow Class")
 
 
 class TestStaffClass(TestCase):
+    def setUp(self):
+        self.name = "Jane Doe"
+        self.id = "ST01"
 
     def test_staff_is_subclass_of_person(self):
-        pass
+        staff = Staff(id=self.id, name=self.name)
+        self.assertIsInstance(staff, Person,
+                              msg="Class Fellow should extend Person Class")
 
     def test_create_staff(self):
         pass
 
 
 class TestLivingRoomClass(TestCase):
-
     def test_living_room_subclass_of_room(self):
         pass
 
@@ -42,7 +65,6 @@ class TestLivingRoomClass(TestCase):
 
 
 class TestOfficeClass(TestCase):
-
     def test_office_subclass_room(self):
         pass
 
