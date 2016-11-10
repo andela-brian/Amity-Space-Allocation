@@ -10,6 +10,9 @@ class TestFellowCLass(TestCase):
     def test_create_person(self):
         pass
 
+    def test_error_creating_person_no_name(self):
+        pass
+
 
 class TestStaffClass(TestCase):
 
