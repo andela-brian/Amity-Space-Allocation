@@ -43,8 +43,11 @@ class TestStaffClass(TestCase):
         self.assertIsInstance(staff, Person,
                               msg="Class Fellow should extend Person Class")
 
-    def test_create_staff(self):
-        pass
+    def test_create_new_staff(self):
+        staff = Staff(id=self.id, name=self.name)
+        self.assertListEqual([self.id, self.name],
+                             [staff.get_id(), staff.get_name()],
+                             msg="The Staff named {0} should have id {1}".format(self.name, self.id)))
 
 
 class TestLivingRoomClass(TestCase):
