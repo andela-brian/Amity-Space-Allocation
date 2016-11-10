@@ -30,3 +30,15 @@ class TestAmityClass(TestCase):
 
     def test_default_values_on_create_instace(self):
         pass
+
+    def test_allocate_fellow_to_office(self):
+        pass
+
+    def test_error_allocate_office_more_than_four_persons(self):
+        pass
+
+    def test_create_office_space(self):
+        pass
+
+    def test_allocate_staff_to_office(self):
+        pass
