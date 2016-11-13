@@ -8,9 +8,9 @@ class TestPersonClass(TestCase):
         self.id = "FE01"
 
     def test_error_creating_person_object(self):
-        self.assertRaises(ValueError, Person(id=self.id),
+        self.assertRaises(ValueError, Person(),
                           msg="A person object cannot be created without id")
-        self.assertRaises(ValueError, Person(name=self.name),
+        self.assertRaises(ValueError, Person(id=self.id, name=self.name),
                           msg="A person cannot be created with a name")
 
 
