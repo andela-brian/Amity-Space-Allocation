@@ -65,7 +65,7 @@ class TestLivingRoomClass(TestCase):
         self.assertEqual(4, self.living_space.get_capacity(),
                          msg="Living Space should have a total of 4 spaces")
 
-    def test_allocating_living_space(self):
+    def test_allocated_living_space(self):
         self.assertTrue(self.living_space.is_available(),
                         msg="Living Space should be available before allocation of spaces")
         staff = Staff(id="STF01", name="John Doe")
