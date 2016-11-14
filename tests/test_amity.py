@@ -1,4 +1,5 @@
 from unittest import TestCase
+from mock import patch
 
 
 class TestAmityClass(TestCase):
@@ -39,26 +40,14 @@ class TestAmityClass(TestCase):
         self.amity.create_fellow(first_name="John", other_name="Dow", accomodation='Y')
         self.amity.create_fellow(first_name="Brian", other_name="Kimani")
 
-        allocations = self.amity.get_allocations()
-        self.assertEqual(1, len(allocations['living_spaces']['Perl'].get_allocations()),
-                         msg="Only One fellow should be allocated to Perl Living Space")
-        self.assertEqual(2, len(allocations['offices']['Homer'].get_allocations()),
-                         msg="Only Two fellows should be allocated to Homer office space")
-
+    @patch.dict('Amity.rooms', {'offices': ['Summer', 'Winter'], 'living_spaces': ['Shell', 'Perl']})
     def test_create_rooms(self):
-        self.amity = Amity()
-        self.amity.create_living_space("Summer")
-        self.amity.create_living_space("Winter")
-        self.amity.create_office("Lime")
-        self.amity.create_office("Blue")
-
         offices = self.amity.get_rooms()['offices']
         living_spaces = self.amity.get_rooms()['living_spaces']
 
-        self.assertListEqual(["Summer", "Winter"],
-                             offices,
+        self.assertListEqual(["Summer", "Winter"], offices,
                              msg="Offices in Amity should be Summer and Winter")
 
         self.assertListEqual(["Lime", "Blue"],
-                             offices,
+                             living_spaces,
                              msg="Living Spaces in Amity should be Lime and Blue")
