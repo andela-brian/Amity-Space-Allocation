@@ -2,17 +2,6 @@ from unittest import TestCase
 
 import mock
 
-from amity.amity import Amity
-
-
-class LivingSpace(object):
-    def __init__(self, name):
-        pass
-
-
-class OfficeSpace(object):
-    def __init__(self, name):
-        pass
 
 
 class TestAmityClass(TestCase):
@@ -21,7 +10,7 @@ class TestAmityClass(TestCase):
 
     def test_default_values(self):
         self.assertEqual(0,
-                         self.amity.get_unallocated_people(),
+                         len(self.amity.get_unallocated_people()),
                          msg="The unallocated fellows and staff should be 0 on creation of Amity Object")
 
         self.assertEqual(
@@ -39,36 +28,29 @@ class TestAmityClass(TestCase):
             msg="The available and unavailable living rooms should be empty on creating new amity object"
         )
 
-    @mock.patch.dict('amity.amity.Amity.offices',
-                     {'available': [OfficeSpace('Summer')],
-                      'unavailable': []
-                      })
-    @mock.patch.dict('amity.amity.Amity.living_spaces',
-                     {'available': [LivingSpace('Shell')],
-                      'unavailable': []
-                      }
-                     )
+    @mock.patch.dict('amity.amity.Amity.offices', {'available': [OfficeSpace('Summer')], 'unavailable': []})
+    @mock.patch.dict('amity.amity.Amity.living_spaces', {'available': [LivingSpace('Shell')], 'unavailable': []})
     def test_create_fellow(self):
         self.amity.create_fellow(first_name="John", other_name="Dow", accomodation='Y')
         self.amity.create_fellow(first_name="Brian", other_name="Kimani")
 
         self.assertEqual(2,
-                         len(self.amity.get_rooms()['offices'][0].get_allocations()),
+                         len(self.amity.get_rooms()['offices']['available'][0].get_allocations()),
                          msg="Two fellows should be assigned to the Summer Office Space")
         self.assertEqual(1,
-                         len(self.amity.get_rooms()['living_spaces'][0].get_allocations()),
+                         len(self.amity.get_rooms()['living_spaces']['available'][0].get_allocations()),
                          msg="One Fellow should be assigned a Living Space at Shell")
 
     @mock.patch.dict('amity.amity.Amity.offices', {'available': [OfficeSpace('Summer'), OfficeSpace('Winter')]})
     @mock.patch.dict('amity.amity.Amity.living_spaces', {'available': [LivingSpace('Shell'), LivingSpace('Perl')]})
     def test_create_rooms(self):
-        self.ssertItemsEqual(["Summer", "Winter"],
-                             self.amity.get_rooms()['offices'],
-                             msg="Offices in Amity should be Summer and Winter")
+        self.assertItemsEqual(["Summer", "Winter"],
+                              [office.get_name() for office in self.amity.get_rooms()['offices']['available']],
+                              msg="Offices in Amity should be Summer and Winter")
         self.assertItemsEqual(["Shell", "Perl"],
-                             self.amity.get_rooms()['living_spaces'],
-                             msg="Living Spaces in Amity should be Shell and Perl")
-        with self.assertRaises(ValueError) as exception:
-            self.amity.create_office("Summer")
-            self.assertEqual('Room Summer Exists', exception.message,
-                             msg="Two rooms cannot have the same name")
+                              [living_space.get_name() for living_space in
+                               self.amity.get_rooms()['living_spaces']['available']],
+                              msg="Living Spaces in Amity should be Shell and Perl")
+
+        self.assertEqual('Room Exists', self.amity.create_office("Summer"),
+                         msg='Office name should be unique ')
