@@ -10,8 +10,10 @@ class TestPersonClass(TestCase):
     def test_error_creating_person_object(self):
         self.assertRaises(ValueError, Person(),
                           msg="A person object cannot be created without id")
-        self.assertRaises(ValueError, Person(id=self.id, name=self.name),
-                          msg="A person cannot be created with a name")
+        self.assertRaises(ValueError, Person(id=self.id, name=None),
+                          msg="A person cannot be created without a name")
+        self.assertRaises(ValueError, Person(id=self.id, name=123),
+                          msg="A person name name cannot be numbers")
 
 
 class TestFellowCLass(TestCase):
@@ -64,7 +66,7 @@ class TestLivingRoomClass(TestCase):
     def test_living_room_capacity(self):
         self.assertEqual(4, self.living_space.get_capacity(),
                          msg="Living Space should have a total of 4 spaces")
-
+    
     def test_allocated_living_space(self):
         self.assertTrue(self.living_space.is_available(),
                         msg="Living Space should be available before allocation of spaces")

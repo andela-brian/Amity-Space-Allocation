@@ -3,30 +3,9 @@ from unittest import TestCase
 import mock
 
 
-
 class TestAmityClass(TestCase):
     def setUp(self):
         self.amity = Amity()
-
-    def test_default_values(self):
-        self.assertEqual(0,
-                         len(self.amity.get_unallocated_people()),
-                         msg="The unallocated fellows and staff should be 0 on creation of Amity Object")
-
-        self.assertEqual(
-            0,
-            len(self.amity.get_rooms()['offices']['available']) + len(self.amity.get_rooms()['offices']['unavailable'])
-            ,
-            msg="The available and unavailable offices should be 0 on creating new amity object"
-        )
-
-        self.assertEqual(
-            0,
-            len(self.amity.get_rooms()['living_spaces']['available']) + len(
-                self.amity.get_rooms()['living_spaces']['unavailable'])
-            ,
-            msg="The available and unavailable living rooms should be empty on creating new amity object"
-        )
 
     @mock.patch.dict('amity.amity.Amity.offices', {'available': [OfficeSpace('Summer')], 'unavailable': []})
     @mock.patch.dict('amity.amity.Amity.living_spaces', {'available': [LivingSpace('Shell')], 'unavailable': []})
@@ -52,5 +31,7 @@ class TestAmityClass(TestCase):
                                self.amity.get_rooms()['living_spaces']['available']],
                               msg="Living Spaces in Amity should be Shell and Perl")
 
-        self.assertEqual('Room Exists', self.amity.create_office("Summer"),
-                         msg='Office name should be unique ')
+        self.assertEqual('Room Summer Exists', self.amity.create_office("Summer"),
+                         msg='an error should be returned if a room with the same name exists')
+        self.assertEqual('Created Room Lilac', self.amity.create_office("Lilac"),
+                         msg='A new room named Lilac should be created')
