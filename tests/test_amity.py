@@ -2,6 +2,18 @@ from unittest import TestCase
 
 import mock
 
+from amity.amity import Amity
+
+
+class LivingSpace(object):
+    def __init__(self, name):
+        pass
+
+
+class OfficeSpace(object):
+    def __init__(self, name):
+        pass
+
 
 class TestAmityClass(TestCase):
     def setUp(self):
@@ -27,12 +39,14 @@ class TestAmityClass(TestCase):
             msg="The available and unavailable living rooms should be empty on creating new amity object"
         )
 
-    @mock.patch.dict('amity.amity.Amity.offices', {'available': [OfficeSpace('Summer')],
-                                                   'unavailable': []
-                                                   })
-    @mock.patch.dict('amity.amity.Amity.living_spaces', {'available': [LivingSpace('Shell')],
-                                                         'unavailable': []
-                                                         }
+    @mock.patch.dict('amity.amity.Amity.offices',
+                     {'available': [OfficeSpace('Summer')],
+                      'unavailable': []
+                      })
+    @mock.patch.dict('amity.amity.Amity.living_spaces',
+                     {'available': [LivingSpace('Shell')],
+                      'unavailable': []
+                      }
                      )
     def test_create_fellow(self):
         self.amity.create_fellow(first_name="John", other_name="Dow", accomodation='Y')
@@ -45,19 +59,16 @@ class TestAmityClass(TestCase):
                          len(self.amity.get_rooms()['living_spaces'][0].get_allocations()),
                          msg="One Fellow should be assigned a Living Space at Shell")
 
-    @mock.patch.dict('amity.amity.Amity.offices', {'available': [OfficeSpace('Summer'), OfficeSpace('Winter')],
-                                                   'unavailable': []
-                                                   })
-    @mock.patch.dict('amity.amity.Amity.living_spaces', {'available': [LivingSpace('Shell'), LivingSpace('Perl')],
-                                                         'unavailable': []
-                                                         })
+    @mock.patch.dict('amity.amity.Amity.offices', {'available': [OfficeSpace('Summer'), OfficeSpace('Winter')]})
+    @mock.patch.dict('amity.amity.Amity.living_spaces', {'available': [LivingSpace('Shell'), LivingSpace('Perl')]})
     def test_create_rooms(self):
-        self.assertListEqual(["Summer", "Winter"],
+        self.ssertItemsEqual(["Summer", "Winter"],
                              self.amity.get_rooms()['offices'],
                              msg="Offices in Amity should be Summer and Winter")
-        self.assertListEqual(["Shell", "Perl"],
+        self.assertItemsEqual(["Shell", "Perl"],
                              self.amity.get_rooms()['living_spaces'],
                              msg="Living Spaces in Amity should be Shell and Perl")
         with self.assertRaises(ValueError) as exception:
             self.amity.create_office("Summer")
-            self.assertEqual()
+            self.assertEqual('Room Summer Exists', exception.message,
+                             msg="Two rooms cannot have the same name")
