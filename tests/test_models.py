@@ -1,8 +1,9 @@
 from unittest import TestCase
 
+import mock
+
 
 class TestPersonClass(TestCase):
-
     def setUp(self):
         self.name = "John Doe"
         self.id = "FE01"
@@ -27,7 +28,6 @@ class TestFellowCLass(TestCase):
                               msg="Fellow class should be a subclass of Person")
 
     def test_create_new_fellow_(self):
-
         self.assertListEqual([self.id, self.name],
                              [self.fellow.get_id, self.fellow.get_name],
                              msg="The fellow named {0} should have id {1}".format(self.name, self.id))
@@ -54,7 +54,6 @@ class TestStaffClass(TestCase):
 
 
 class TestLivingRoomClass(TestCase):
-
     def setUp(self):
         self.name = "SHELL"
         self.living_space = LivingSpace(name=self.name)
@@ -66,20 +65,20 @@ class TestLivingRoomClass(TestCase):
     def test_living_room_capacity(self):
         self.assertEqual(4, self.living_space.get_capacity(),
                          msg="Living Space should have a total of 4 spaces")
-    
-    def test_allocated_living_space(self):
-        self.assertTrue(self.living_space.is_available(),
-                        msg="Living Space should be available before allocation of spaces")
-        staff = Staff(id="STF01", name="John Doe")
 
+    @mock.patch.dict('amity_lib.amity.models.LivingRoom.persons',
+                     [Fellow(id=fellow_id, name="Fellow Name " + str(fellow_id)) for fellow_id in xrange(1, 4)])
+    def test_allocate_living_space(self):
+        self.assertTrue(self.living_space.is_available(),
+                        msg="Living Space should be available if not fully allocated")
+
+        staff = Staff(id="STF01", name="John Doe")
         self.assertRaises(TypeError, self.living_space.allocate_space(staff),
                           msg="A staff member cannot be allocated Living Space")
 
-        # create test data for fellows
-        fellows = [Fellow(id=fellow_id, name="Fellow Name " + str(fellow_id)) for fellow_id in xrange(1, 6)]
-        for fellow_id in xrange(4):
-            self.living_space.allocate_space(fellows.pop())
+        fellows = [Fellow(id=fellow_id, name="Fellow Name " + str(fellow_id)) for fellow_id in xrange(4, 6)]
 
+        self.living_space.allocate_space(fellows.pop())
         self.assertListEqual(fellows, self.living_space.get_allocations(),
                              msg="Living Space should contain four fellows after allocation")
 
@@ -99,3 +98,13 @@ class TestOfficeClass(TestCase):
     def test_office_room_capacity(self):
         self.assertEqual(6, self.office_space.get_capacity(),
                          msg="Office should have a total of 6 spaces ")
+
+    def test_allocate_room(self):
+        staff = Staff(id="STF01", name="John Doe")
+        fellow = Fellow(id="FL01", name="Brian Gitau")
+
+        self.office_space.allocate_space(staff)
+        self.office_space.allocate_space(fellow)
+
+        self.assertEqual(2, len(self.office_space.get_allocations()),
+                         msg='Two person should bw assigned to the SHELL office space')

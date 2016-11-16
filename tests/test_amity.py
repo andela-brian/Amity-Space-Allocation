@@ -7,8 +7,8 @@ class TestAmityClass(TestCase):
     def setUp(self):
         self.amity = Amity()
 
-    @mock.patch.dict('amity.amity.Amity.offices', {'available': [OfficeSpace('Summer')], 'unavailable': []})
-    @mock.patch.dict('amity.amity.Amity.living_spaces', {'available': [LivingSpace('Shell')], 'unavailable': []})
+    @mock.patch.dict('amity_lib.amity.Amity.offices', {'available': [OfficeSpace('Summer')], 'unavailable': []})
+    @mock.patch.dict('amity_lib.amity.Amity.living_spaces', {'available': [LivingSpace('Shell')], 'unavailable': []})
     def test_create_fellow(self):
         self.amity.create_fellow(first_name="John", other_name="Dow", accomodation='Y')
         self.amity.create_fellow(first_name="Brian", other_name="Kimani")
@@ -20,8 +20,8 @@ class TestAmityClass(TestCase):
                          len(self.amity.get_rooms()['living_spaces']['available'][0].get_allocations()),
                          msg="One Fellow should be assigned a Living Space at Shell")
 
-    @mock.patch.dict('amity.amity.Amity.offices', {'available': [OfficeSpace('Summer'), OfficeSpace('Winter')]})
-    @mock.patch.dict('amity.amity.Amity.living_spaces', {'available': [LivingSpace('Shell'), LivingSpace('Perl')]})
+    @mock.patch.dict('amity_lib.amity.Amity.offices', {'available': [OfficeSpace('Summer'), OfficeSpace('Winter')]})
+    @mock.patch.dict('amity_lib.amity.Amity.living_spaces', {'available': [LivingSpace('Shell'), LivingSpace('Perl')]})
     def test_create_rooms(self):
         self.assertItemsEqual(["Summer", "Winter"],
                               [office.get_name() for office in self.amity.get_rooms()['offices']['available']],
