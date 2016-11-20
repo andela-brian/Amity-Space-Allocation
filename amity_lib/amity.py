@@ -26,5 +26,8 @@ class Amity(object):
     def create_staff(self, name):
         pass
 
+    def relocate_person(self, person_id, room_id):
+        pass
+
     def get_rooms(self):
         pass

@@ -63,3 +63,10 @@ class TestAmity(unittest.TestCase):
                           msg="Staff name cannot be empty")
         self.assertRaises(TypeError, self.amity.create_staff(123),
                           msg="Staff name should be alphabetical characters")
+
+    @mock.patch.dict('amity_lib.amity.Amity.offices', {'available': {'Hogwarts': Office('Hogwarts'), 'Blue': Office('Blue')}})
+    @mock.patch.dict('amity_lib.amity.Amity.living_spaces', {'available': {'Shell': LivingSpace('Shell'), 'Perl': LivingSpace('Perl')}})
+    def test_relocate_person(self):
+        staff_id = 'ST001'
+        fellow_id = 'FL001'
+        pass
