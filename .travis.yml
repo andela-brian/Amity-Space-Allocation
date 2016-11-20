@@ -10,9 +10,14 @@ cache: pip
 #install dependacies
 install:
   - pip install -r requirements.txt
+  - pip install codeclimate-test-reporter
 
 #run test using nose
-script: nosetests tests
+script:
+  nosetests --with-coverage --cover-erase
+
+after_success:
+  codeclimate-test-reporter
 
 notifications:
   email: false
