@@ -3,7 +3,7 @@ import unittest
 import mock
 
 from amity_lib.amity import Amity
-from amity_lib.models import Office
+from amity_lib.models import Office, LivingSpace
 
 
 class TestAmity(unittest.TestCase):
@@ -24,4 +24,20 @@ class TestAmity(unittest.TestCase):
         self.assertRaises(ValueError, self.amity.create_office(""),
                           msg='Cannot create Office with empty Name')
         self.assertRaises(ValueError, self.amity.create_office(123),
-                          msg='Cannot create Office with numbers as name')
+                          msg='Cannot create Office with only digits as name')
+
+    @mock.patch.dict('amity_lib.amity.Amity.living_spaces',
+                     {'available': {'Shell': LivingSpace('Shell')}
+                      })
+    def test_living_space(self):
+        self.assertEqual('Created Living Space Perl', self.amity.create_living_spaces("Perl"),
+                         msg='Should create a new Living Space Shell')
+        living_spaces = self.amity.get_rooms()['living_spaces']['available'].keys()
+        self.assertItemsEqual(['Shell', 'Perl'], living_spaces,
+                              msg="Available Living spaces should be Perl and Shell")
+        self.assertRaises(ValueError, self.amity.create_living_spaces("Shell"),
+                          msg="Cannot create duplicate living space Shell")
+        self.assertRaises(ValueError, self.amity.create_living_spaces(""),
+                          msg="cannot create Living Space with empty name")
+        self.assertRaises(ValueError, self.amity.create_living_spaces(123),
+                          msg="Cannot create Living Space with only digits as name")

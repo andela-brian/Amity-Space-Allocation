@@ -16,3 +16,6 @@ class Amity(object):
 
     def get_rooms(self):
         pass
+
+    def create_living_spaces(self, living_space_name):
+        pass
