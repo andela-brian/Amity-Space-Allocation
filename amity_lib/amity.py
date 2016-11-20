@@ -9,13 +9,22 @@ class Amity(object):
         'unavailable': {},
     }
 
-    unallocated_persons = []
+    fellows = {}
+    staff = {}
+
+    unallocated_persons_ids = []
 
     def create_office(self, office_name):
         pass
 
-    def get_rooms(self):
+    def create_living_spaces(self, living_space_name):
         pass
 
-    def create_living_spaces(self, living_space_name):
+    def create_fellow(self, name, accommodation='N'):
+        pass
+
+    def create_staff(self, name):
+        pass
+
+    def get_rooms(self):
         pass

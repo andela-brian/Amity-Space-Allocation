@@ -10,9 +10,7 @@ class TestAmity(unittest.TestCase):
     def setUp(self):
         self.amity = Amity()
 
-    @mock.patch.dict('amity_lib.amity.Amity.offices',
-                     {'available': {'Hogwarts': Office('Hogwarts')}
-                      })
+    @mock.patch.dict('amity_lib.amity.Amity.offices', {'available': {'Hogwarts': Office('Hogwarts')}})
     def test_create_office(self):
         self.assertEqual('Created Office Summer', self.amity.create_office("Summer"),
                          msg='Should create a new Office named Summer')
@@ -26,10 +24,8 @@ class TestAmity(unittest.TestCase):
         self.assertRaises(ValueError, self.amity.create_office(123),
                           msg='Cannot create Office with only digits as name')
 
-    @mock.patch.dict('amity_lib.amity.Amity.living_spaces',
-                     {'available': {'Shell': LivingSpace('Shell')}
-                      })
-    def test_living_space(self):
+    @mock.patch.dict('amity_lib.amity.Amity.living_spaces', {'available': {'Shell': LivingSpace('Shell')}})
+    def test_create_living_space(self):
         self.assertEqual('Created Living Space Perl', self.amity.create_living_spaces("Perl"),
                          msg='Should create a new Living Space Shell')
         living_spaces = self.amity.get_rooms()['living_spaces']['available'].keys()
@@ -41,3 +37,29 @@ class TestAmity(unittest.TestCase):
                           msg="cannot create Living Space with empty name")
         self.assertRaises(ValueError, self.amity.create_living_spaces(123),
                           msg="Cannot create Living Space with only digits as name")
+
+    @mock.patch.dict('amity_lib.amity.Amity.living_spaces', {'available': {'Shell': LivingSpace('Shell')}})
+    @mock.patch.dict('amity_lib.amity.Amity.offices', {'available': {'Hogwarts': Office('Hogwarts')}})
+    def test_create_fellow(self):
+        self.assertDictEqual({'id': 'FL001', 'name': 'Kimani John', 'office': 'Hogwarts', 'living_space': None},
+                             self.amity.create_fellow('Kimani John'),
+                             msg="should create Fellow Kimani John with ID FL001 assigned Hogwarts Office Space")
+        self.assertDictEqual({'id': 'FL002', 'name': 'Joshua Simeon', 'office': 'Hogwarts', 'living_space': 'Shell'},
+                             self.amity.create_fellow('Joshua Simeon', accommodation='Y'),
+                             msg="should create Fellow Joshua Simeon with ID FL002 assigned Hogwarts Office Space and Shell Living Space")
+        self.assertRaises(ValueError, self.amity.create_fellow(""),
+                          msg="Fellow name should not be empty")
+        self.assertRaises(TypeError, self.amity.create_fellow(123),
+                          msg="Fellow name should contain only Alphabetical Characters")
+        self.assertRaises(ValueError, self.amity.create_fellow("Johhny Bravo", accommodation='X'),
+                          msg="Excepted values for accommodation is Y and N")
+
+    @mock.patch.dict('amity_lib.amity.Amity.offices', {'available': {'Hogwarts': Office('Hogwarts')}})
+    def test_create_staff(self):
+        self.assertDictEqual({'id': 'FL001', 'name': 'Kimani John', 'office': 'Hogwarts'},
+                             self.amity.create_staff('Kimani John'),
+                             msg="should create Staff Kimani John with ID ST001 assigned Hogwarts Office Space")
+        self.assertRaises(ValueError, self.amity.create_staff(""),
+                          msg="Staff name cannot be empty")
+        self.assertRaises(TypeError, self.amity.create_staff(123),
+                          msg="Staff name should be alphabetical characters")
