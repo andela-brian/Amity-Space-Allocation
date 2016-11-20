@@ -9,5 +9,10 @@ class Amity(object):
         'unavailable': {},
     }
 
-    def create_office(self):
+    unallocated_persons = []
+
+    def create_office(self, office_name):
+        pass
+
+    def get_rooms(self):
         pass
