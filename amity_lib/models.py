@@ -34,3 +34,31 @@ class Fellow(Person):
 
     def is_allocated_living_space(self):
         pass
+
+
+class Room(object):
+    persons_id = []
+    capacity = None
+
+    def __init__(self, name):
+        self.name = name
+
+    def is_available(self):
+        pass
+
+    def allocate_space(self, person_id=None):
+        pass
+
+    def get_allocated(self):
+        pass
+
+    def get_capacity(self):
+        pass
+
+
+class LivingSpace(Room):
+    capacity = 4
+
+
+class Office(Room):
+    capacity = 6
