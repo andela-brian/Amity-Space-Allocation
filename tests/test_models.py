@@ -1,110 +1,19 @@
-from unittest import TestCase
+import unittest
 
-import mock
+from amity_lib.models import Staff, Person
 
 
-class TestPersonClass(TestCase):
+class TestStaffClass(unittest.TestCase):
+
     def setUp(self):
-        self.name = "John Doe"
-        self.id = "FE01"
+        self.staff = Staff("John Maina")
 
-    def test_error_creating_person_object(self):
-        self.assertRaises(ValueError, Person(),
-                          msg="A person object cannot be created without id")
-        self.assertRaises(ValueError, Person(id=self.id, name=None),
-                          msg="A person cannot be created without a name")
-        self.assertRaises(ValueError, Person(id=self.id, name=123),
-                          msg="A person name name cannot be numbers")
-
-
-class TestFellowCLass(TestCase):
-    def setUp(self):
-        self.name = "John Doe"
-        self.id = "FE01"
-        self.fellow = Fellow(id=self.id, name=self.name)
-
-    def test_fellow_is_subclass_of_person(self):
-        self.assertIsInstance(self.fellow, Person,
-                              msg="Fellow class should be a subclass of Person")
-
-    def test_create_new_fellow_(self):
-        self.assertListEqual([self.id, self.name],
-                             [self.fellow.get_id, self.fellow.get_name],
-                             msg="The fellow named {0} should have id {1}".format(self.name, self.id))
-        self.assertEqual("FELLOW", fellow.get_role(),
-                         msg="get_role functions should return 'FELLOW' for Fellow Class")
-
-
-class TestStaffClass(TestCase):
-    def setUp(self):
-        self.name = "Jane Doe"
-        self.id = "ST01"
-        self.staff = Staff(id=self.id, name=self.name)
-
-    def test_staff_is_subclass_of_person(self):
+    def test_is_subclass_person(self):
         self.assertIsInstance(self.staff, Person,
-                              msg="Staff class should subclass of Person")
+                              msg="The class Staff should extend Person class")
 
-    def test_create_new_staff(self):
-        self.assertListEqual([self.id, self.name],
-                             [self, self.staff.get_id(), self.staff.get_name()],
-                             msg="The Staff named {0} should have id {1}".format(self.name, self.id))
-        self.assertRaises(ValueError, Staff, id=self.id, name=None,
-                          msg="cannot create Staff with name as None type")
-
-
-class TestLivingRoomClass(TestCase):
-    def setUp(self):
-        self.name = "SHELL"
-        self.living_space = LivingSpace(name=self.name)
-
-    def test_living_room_subclass_of_room(self):
-        self.assertIsInstance(self.living_space, Room,
-                              msg="LivingRoom class should be a subclass of Room")
-
-    def test_living_room_capacity(self):
-        self.assertEqual(4, self.living_space.get_capacity(),
-                         msg="Living Space should have a total of 4 spaces")
-
-    @mock.patch.dict('amity_lib.amity.models.LivingRoom.persons',
-                     [Fellow(id=fellow_id, name="Fellow Name " + str(fellow_id)) for fellow_id in xrange(1, 4)])
-    def test_allocate_living_space(self):
-        self.assertTrue(self.living_space.is_available(),
-                        msg="Living Space should be available if not fully allocated")
-
-        staff = Staff(id="STF01", name="John Doe")
-        self.assertRaises(TypeError, self.living_space.allocate_space(staff),
-                          msg="A staff member cannot be allocated Living Space")
-
-        fellows = [Fellow(id=fellow_id, name="Fellow Name " + str(fellow_id)) for fellow_id in xrange(4, 6)]
-
-        self.living_space.allocate_space(fellows.pop())
-        self.assertListEqual(fellows, self.living_space.get_allocations(),
-                             msg="Living Space should contain four fellows after allocation")
-
-        self.assertRaises(ValueError, self.living_space.allocate_space, fellows.pop(),
-                          msg="Living space cannot be allocated to more than 4 fellows")
-
-
-class TestOfficeClass(TestCase):
-    def setUp(self):
-        self.name = "SHELL"
-        self.office_space = Office(name=self.name)
-
-    def test_office_subclass_of_room(self):
-        self.assertIsInstance(self.office_space, Room,
-                              msg="LivingRoom class should be a subclass of Room")
-
-    def test_office_room_capacity(self):
-        self.assertEqual(6, self.office_space.get_capacity(),
-                         msg="Office should have a total of 6 spaces ")
-
-    def test_allocate_room(self):
-        staff = Staff(id="STF01", name="John Doe")
-        fellow = Fellow(id="FL01", name="Brian Gitau")
-
-        self.office_space.allocate_space(staff)
-        self.office_space.allocate_space(fellow)
-
-        self.assertEqual(2, len(self.office_space.get_allocations()),
-                         msg='Two person should bw assigned to the SHELL office space')
+    def test_create_new_staff_instance(self):
+        self.assertRaises(ValueError, Staff, "",
+                          msg="Cannot create staff with empty name")
+        self.assertEqual("John Maina", self.staff.get_name(),
+                         msg="Staff name should be John Maina")
