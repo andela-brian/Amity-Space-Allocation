@@ -1,4 +1,5 @@
 class Person(object):
+
     name = None
     office = None
 
